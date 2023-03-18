@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_18_015454) do
+ActiveRecord::Schema.define(version: 2023_03_18_111355) do
 
   create_table "assignments", force: :cascade do |t|
     t.string "course"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2023_03_18_015454) do
     t.string "first_name"
     t.string "last_name"
     t.string "student_pic"
-    t.string "gender"
+    t.string "pronouns"
     t.integer "age"
     t.datetime "birthday"
     t.string "academic_standing"
