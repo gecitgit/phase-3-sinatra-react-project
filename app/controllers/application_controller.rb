@@ -25,6 +25,34 @@ class ApplicationController < Sinatra::Base
     student = Student.find(params[:id])
     student.to_json(include: :assignments)
   end
+  
+  get "/students/:id/assignments" do
+    student = Student.find(params[:id])
+    assignments = student.assignments.all
+    assignments.to_json
+  end
+
+  post "/students/:id/assignments" do
+    student = Student.find(params[:id])
+    newAssignment = Assignment.create(
+      course: params[:course],
+      assignment_type: params[:assignment_type],
+      due_date: params[:due_date],
+      submitted: params[:submitted],
+      on_time: params[:on_time],
+      score: params[:score],
+      notes: params[:notes],
+      student_id: student.id
+    )
+    newAssignment.to_json
+  end
+
+  delete "/students/:id/assignments/:student_id" do
+    student = Student.find(params[:id])
+    assignment = Assignment.find(params[:student_id])
+    assignment.destroy
+    assignment.to_json
+  end
 
   get "/assignments" do
     assignments = Assignment.all
@@ -41,6 +69,26 @@ class ApplicationController < Sinatra::Base
     message.destroy
     message.to_json
   end
+
+  # post "/students/:student_id/assignments" do
+  #   student = Student.find(params[:student_id])
+  #   assignment = student.assignments.create(
+  #     course: params[:course]
+  #     assignment_type: params[:assignment_type],
+  #     due_date: params[:due_date],
+  #     submitted: params[:submitted],
+  #     on_time: params[:on_time],
+  #     score: params[:score],
+  #     notes: params[:notes],
+  #     student_id: params[:student_id]
+  #   )
+  #   assignment.to_json
+  # end
+
+
+
+  #redo all /assignments endpoints to go via students instead
+  # delete "/students/:id/assignments/:id" do
 
   delete "/students/:id" do
     student = Student.find(params[:id])
@@ -66,19 +114,39 @@ class ApplicationController < Sinatra::Base
     student.to_json(include: :assignments)
   end
 
+  patch "/students/:id" do
+    student = Student.find(params[:id])
+    student.update(
+      first_name: params[:first_name],
+      last_name: params[:last_name],
+      student_pic: params[:student_pic],
+      pronouns: params[:pronouns],
+      age: params[:age],
+      birthday: params[:birthday],
+      academic_standing: params[:academic_standing],
+      hobby: params[:hobby],
+      allergies: params[:allergies],
+      e_contact_name: params[:e_contact_name],
+      e_contact_relationship: params[:e_contact_relationship],
+      e_contact_number: params[:e_contact_number]
+    )
+    student.to_json(include: :assignments)
+  end
 
+  patch "/students/:id/assignments/:student_id" do
+    student = Student.find(params[:id])
+    assignment = Assignment.find(params[:student_id])
+    assignment.update(
+      course: params[:course],
+      assignment_type: params[:assignment_type],
+      due_date: params[:due_date],
+      submitted: params[:submitted],
+      on_time: params[:on_time],
+      score: params[:score],
+      notes: params[:notes]
+    )
+    assignment.to_json
+  end
 
-  #there will be a post to handle new students OR assignments getting added
-
-  #post "/students" do
-    #student = Student.create(all kinds of params in here)
-    #student.to_json
-  #end
-
-
-  #this will handle PATCH requests to the individual assignments
-  #patch "/students/:id/assignments/:id" do ???
-    #do stuff
-  #end
 
 end
