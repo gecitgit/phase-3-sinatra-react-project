@@ -4,7 +4,7 @@ academic_standings = ["Good Standing", "Warning", "Probation"]
 pronoun_array = ["He/Him", "She/Her", "They/Them", "He/Them", "She/Them", "Other"]
 assignment_types = ["Test", "Quiz", "Lab", "Project", "Homework"]
 
-6.times do
+8.times do
     student_bday = Faker::Date.birthday(min_age: 8, max_age: 23)
     student_age = Time.now.year - student_bday.year
     student = Student.create(
