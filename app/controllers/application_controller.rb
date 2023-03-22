@@ -1,35 +1,10 @@
 class ApplicationController < Sinatra::Base
   set :default_content_type, 'application/json'
-  
-  # Add your routes here
-  get "/" do
-    { 
-      stuff: [
-        {
-          message: "Good luck with your project!"
-        },
-        {
-          message: "And have fun!"
-        }
-      ]
-    }.to_json
-  end
 
   #handles the initial request for all student info + nested assignment info
   get "/students" do
     students = Student.all
     students.to_json(include: :assignments)
-  end
-
-  get "/students/:id" do
-    student = Student.find(params[:id])
-    student.to_json(include: :assignments)
-  end
-  
-  get "/students/:id/assignments" do
-    student = Student.find(params[:id])
-    assignments = student.assignments.all
-    assignments.to_json
   end
 
   post "/students/:id/assignments" do
@@ -54,41 +29,6 @@ class ApplicationController < Sinatra::Base
     assignment.to_json
   end
 
-  get "/assignments" do
-    assignments = Assignment.all
-    assignments.to_json
-  end
-
-  get "/assignments/:id" do
-    assignment = Assignment.find(params[:id])
-    assignment.to_json
-  end
-
-  delete "/assignments/:id" do
-    message = Message.find(params[:id])
-    message.destroy
-    message.to_json
-  end
-
-  # post "/students/:student_id/assignments" do
-  #   student = Student.find(params[:student_id])
-  #   assignment = student.assignments.create(
-  #     course: params[:course]
-  #     assignment_type: params[:assignment_type],
-  #     due_date: params[:due_date],
-  #     submitted: params[:submitted],
-  #     on_time: params[:on_time],
-  #     score: params[:score],
-  #     notes: params[:notes],
-  #     student_id: params[:student_id]
-  #   )
-  #   assignment.to_json
-  # end
-
-
-
-  #redo all /assignments endpoints to go via students instead
-  # delete "/students/:id/assignments/:id" do
 
   delete "/students/:id" do
     student = Student.find(params[:id])
@@ -148,5 +88,33 @@ class ApplicationController < Sinatra::Base
     assignment.to_json
   end
 
+
+  # These existed simply to allow for easier navigation through browser JSON viewer and Postman
+  # get "/students/:id" do
+  #   student = Student.find(params[:id])
+  #   student.to_json(include: :assignments)
+  # end
+  
+  # get "/students/:id/assignments" do
+  #   student = Student.find(params[:id])
+  #   assignments = student.assignments.all
+  #   assignments.to_json
+  # end
+
+  # get "/assignments" do
+  #   assignments = Assignment.all
+  #   assignments.to_json
+  # end
+
+  # get "/assignments/:id" do
+  #   assignment = Assignment.find(params[:id])
+  #   assignment.to_json
+  # end
+
+  # delete "/assignments/:id" do
+  #   message = Message.find(params[:id])
+  #   message.destroy
+  #   message.to_json
+  # end
 
 end
